@@ -17,6 +17,8 @@ import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
  */
 @TeleOp(group = "drive")
 public class Tele_Op extends LinearOpMode {
+    private static final double CLAW_OPEN_POS = .12;
+    private static final double CLAW_CLOSE_POS = .85;
     @Override
     public void runOpMode() throws InterruptedException {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
@@ -41,16 +43,23 @@ public class Tele_Op extends LinearOpMode {
 
             if (gamepad1.a) {
                 // close the claw
-                claw.setPosition(1); // position 1 is closed
+                claw.setPosition(CLAW_CLOSE_POS); // position 1 is closed
             } else if (gamepad1.b) {
                 // open the claw
-                claw.setPosition(0); //position 1 is open
+                claw.setPosition(CLAW_OPEN_POS); //position 1 is open
             }
 
             // update telemetry
 
-            telemetry.addData("Claw Position", claw.getPosition());
+            telemetry.addData("Claw Position","%.3f",claw.getPosition());
             telemetry.update();
         }
     }
+
+    private void closeClaw() {
+        claw.setPosition(CLAW_CLOSE_POS);
+    }
+    private void openClaw() {
+        claw.setPosition(CLAW_OPEN_POS);
 }
+
