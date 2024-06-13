@@ -4,6 +4,7 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 
@@ -22,6 +23,9 @@ public class Tele_Op extends LinearOpMode {
 
         drive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
+        Servo claw = hardwareMap.get(Servo.class, "wbg");
+
+
         waitForStart();
 
         while (!isStopRequested()) {
@@ -35,10 +39,17 @@ public class Tele_Op extends LinearOpMode {
 
             drive.update();
 
-            Pose2d poseEstimate = drive.getPoseEstimate();
-            telemetry.addData("x", poseEstimate.getX());
-            telemetry.addData("y", poseEstimate.getY());
-            telemetry.addData("heading", poseEstimate.getHeading());
+            if (gamepad1.a) {
+                // close the claw
+                claw.setPosition(1); // position 1 is closed
+            } else if (gamepad1.b) {
+                // open the claw
+                claw.setPosition(0); //position 1 is open
+            }
+
+            // update telemetry
+
+            telemetry.addData("Claw Position", claw.getPosition());
             telemetry.update();
         }
     }
